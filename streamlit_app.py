@@ -36,13 +36,13 @@ df = streamlit.dataframe(fruityvice_normalized)
 add_my_fruit = streamlit.text_input('What fruit would you like to add?')
 streamlit.write('Thanks for adding ', add_my_fruit)
 fruityvice_response2 = requests.get("https://fruityvice.com/api/fruit/" + add_my_fruit)
-
 #takes the content of the api and normalises it
 fruityvice_normalized2 = pandas.json_normalize(fruityvice_response2.json())
-# turns it into a dataframe to display as a table
-df.concat(streamlit.dataframe(fruityvice_normalized2),axis=0)
-
-
+#new row
+new_row = st.text_input(fruityvice_normalized2)
+new_row_dict = json.loads(new_row)
+df = df.append(new_row_dict,ignore_index = True)
+st.dataframe(df)
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
