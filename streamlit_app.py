@@ -39,7 +39,7 @@ fruityvice_response2 = requests.get("https://fruityvice.com/api/fruit/" + add_my
 #takes the content of the api and normalises it
 fruityvice_normalized2 = pandas.json_normalize(fruityvice_response2.json())
 #new df
-new_df = st.DataFrame(fruityvice_normalized2)
+st.DataFrame(fruityvice_normalized2)
 #adds to existing df
 df = pd.concat([df, new_df],ignore_index = True)
 #display
