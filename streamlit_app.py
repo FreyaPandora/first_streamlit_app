@@ -35,18 +35,10 @@ df = streamlit.dataframe(fruityvice_normalized)
 #add another fruit
 add_my_fruit = streamlit.text_input('What fruit would you like to add?')
 streamlit.write('Thanks for adding ', add_my_fruit)
-fruityvice_response2 = requests.get("https://fruityvice.com/api/fruit/" + add_my_fruit)
-#takes the content of the api and normalises it
-fruityvice_normalized2 = pandas.json_normalize(fruityvice_response2.json())
-#new df
-st.DataFrame(fruityvice_normalized2)
-#adds to existing df
-df = pd.concat([df, new_df],ignore_index = True)
-#display
-st.dataframe(df)
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
+my_cur.execute("INSERT INTO fruit_load_list SELECT add_my_fruit")
 my_cur.execute("SELECT * from fruit_load_list")
 my_data_rows = my_cur.fetchall()
 streamlit.header("The fruit load list contains:")
