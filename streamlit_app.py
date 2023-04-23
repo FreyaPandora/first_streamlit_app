@@ -28,21 +28,19 @@ fruit_choice = streamlit.text_input('What fruit would you like information about
 streamlit.write('The user entered ', fruit_choice)
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
 
-
 #takes the content of the api and normalises it
 fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
 # turns it into a dataframe to display as a table
 df = streamlit.dataframe(fruityvice_normalized)
-
 #add another fruit
-add_my_fruit = streamlit.text_input('What fruit would you like to add?','Jackfruit')
+add_my_fruit = streamlit.text_input('What fruit would you like to add?')
 streamlit.write('Thanks for adding ', add_my_fruit)
 fruityvice_response2 = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
 
 #takes the content of the api and normalises it
 fruityvice_normalized2 = pandas.json_normalize(fruityvice_response2.json())
 # turns it into a dataframe to display as a table
-df2 = streamlit.dataframe(fruityvice_normalized2)
+streamlit.df.append(fruityvice_normalized2)
 
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
